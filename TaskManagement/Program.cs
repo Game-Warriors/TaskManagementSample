@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Security.Principal;
 using System.Text;
 using TaskManagement.Application.Abstractions;
+using TaskManagement.Application.Abstractions.Tasks;
 using TaskManagement.Extensions;
 using TaskManagement.Infrastructure.Services;
 using TaskManagement.Infrastructure.Services.Identity;

@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TaskManagement.Application.Abstractions;
+﻿using TaskManagement.Application.Abstractions;
+using TaskManagement.Application.Abstractions.Tasks;
+using TaskManagement.Domain.Entities;
 
 namespace TaskManagement.Infrastructure.Repositories
 {
     public class TaskRepository : ITaskRepository
     {
-        public Task<bool> AddAsync(ITaskItem item)
+        public Task<bool> AddAsync(TaskItem item)
         {
             throw new NotImplementedException();
         }
@@ -19,12 +16,17 @@ namespace TaskManagement.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<ITaskItem> GetAsync(long id)
+        public Task<TaskItem> GetTaskItemByList(long taskId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> UpdateAsync(ITaskItem item)
+        public Task<bool> UpdateAsync(TaskItem item)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<TaskItem> IRepository<long, TaskItem>.GetAsync(long id)
         {
             throw new NotImplementedException();
         }

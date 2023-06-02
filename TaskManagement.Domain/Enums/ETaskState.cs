@@ -8,5 +8,9 @@ namespace TaskManagement.Domain.Enums
 {
     public enum ETaskState
     {
+        None,
+        ToDo,
+        InProgress,
+        Done
     }
 }

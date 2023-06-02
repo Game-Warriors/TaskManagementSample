@@ -13,10 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TaskManagement.Application\TaskManagement.Application.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Persistence\DataModels\" />
+    <ProjectReference Include="..\TaskManagement.Domain\TaskManagement.Domain.csproj" />
   </ItemGroup>
 
 </Project>
