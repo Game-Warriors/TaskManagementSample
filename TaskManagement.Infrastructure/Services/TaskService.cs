@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TaskManagement.Application.Abstractions.Tasks;
-using TaskManagement.Application.Enums;
-using TaskManagement.Application.Exceptions;
+﻿using TaskManagement.Application.Abstractions.Tasks;
+using TaskManagement.Application.Exceptions.Tasks;
 using TaskManagement.Domain.Entities;
-using TaskManagement.Domain.Enums;
-using TaskManagement.Infrastructure.Common.Models;
+using TaskManagement.Infrastructure.Common.Extensions;
+using TaskManagement.Infrastructure.Common.Models.Tasks;
 
 namespace TaskManagement.Infrastructure.Services
 {
@@ -21,10 +15,10 @@ namespace TaskManagement.Infrastructure.Services
             _taskRepo = taskRepo;
         }
 
-        public async ValueTask<TaskItem> CreateTaskAsync(ICreateTaskData taskData)
+        public async ValueTask<TaskItem> CreateTaskAsync(string userId, ICreateTaskData taskData)
         {
             TaskItem taskItem =
-                new TaskItem(taskData.Title, taskData.Priority, taskData.Note);
+                new TaskItem(taskData.Title, taskData.Priority, taskData.Note, userId);
 
             bool isSuccess = await _taskRepo.AddAsync(taskItem);
             if (isSuccess)
@@ -35,11 +29,17 @@ namespace TaskManagement.Infrastructure.Services
                 throw new TaskCreationFailedException();
         }
 
-        public async Task<bool> DeleteTaskAsync(long taskId)
+        public async ValueTask<bool> DeleteTaskAsync(string userId, long taskId)
         {
             if (taskId < 1)
                 throw new TaskInvalidDataException("Delete Task");
 
+            TaskItem taskItem = await _taskRepo.GetAsync(taskId);
+            if (taskItem == null)
+                throw new TaskItemNotExistException();
+
+            if (taskItem.CreatorId != userId)
+                throw new TaskItemNotAccessException(taskId, userId, "Delete Task");
             bool isSuccess = await _taskRepo.DeleteAsync(taskId);
             if (isSuccess)
             {
@@ -49,11 +49,29 @@ namespace TaskManagement.Infrastructure.Services
                 throw new TaskItemNotExistException();
         }
 
-        public async Task<bool> UpdateTaskAsync(IUpdateTaskData taskData)
+        public async ValueTask<ITaskGroupResult> GetAllTasksAsync(ITaskFilter filterData)
+        {
+            IList<string> userIds = filterData.UserIds?.Where(input => !string.IsNullOrEmpty(input) && !string.IsNullOrWhiteSpace(input)).ToArray() ?? default!;
+            if (userIds == null || userIds.Count < 1)
+            {
+                IList<TaskItem> items = await _taskRepo.GetAllAsync();
+                return new TaskGroupResult(items.Select(input => (ITaskItem)input.ToTaskItemResult()), items.Count);
+            }
+            else
+            {
+                IList<TaskItem> items = await _taskRepo.GetAllItemByUserFilterAsync(userIds);
+                return new TaskGroupResult(items.Select(input => (ITaskItem)input.ToTaskItemResult()), items.Count);
+            }
+        }
+
+        public async ValueTask<bool> UpdateTaskAsync(string userId, IUpdateTaskData taskData)
         {
             TaskItem taskItem = await _taskRepo.GetAsync(taskData.TaskId);
             if (taskItem == null)
                 throw new TaskItemNotExistException();
+
+            if (taskItem.CreatorId != userId)
+                throw new TaskItemNotAccessException(taskData.TaskId, userId, "Update Task");
 
             taskItem.Update(taskData.TaskTitle, taskData.TaskNote, taskData.TaskPriority);
 

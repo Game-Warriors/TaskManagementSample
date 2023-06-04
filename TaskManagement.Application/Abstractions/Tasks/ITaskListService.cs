@@ -10,7 +10,7 @@ namespace TaskManagement.Application.Abstractions.Tasks
 {
     public interface ITaskListService
     {
-        ValueTask<bool> ChangeTaskList(TaskItem taskItem, ETaskState newState);
-        ValueTask<TaskList> FindOrCreateTaskListByState(ETaskState taskState);
+        ValueTask<bool> ChangeTaskListAsync(TaskItem taskItem, ETaskState newState);
+        ValueTask<TaskList> FindOrCreateTaskListByStateAsync(ETaskState taskState);
     }
 }

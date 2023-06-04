@@ -16,7 +16,12 @@ namespace TaskManagement.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<TaskItem> GetTaskItemByList(long taskId)
+        public Task<IList<TaskItem>> GetAllAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IList<TaskItem>> GetAllItemByUserFilterAsync(IList<string> userIds)
         {
             throw new NotImplementedException();
         }

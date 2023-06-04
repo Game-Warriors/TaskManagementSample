@@ -14,7 +14,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskManagement.Infrastructu
 		{AFA39611-3D1E-4474-8DB9-E53A8030295A} = {AFA39611-3D1E-4474-8DB9-E53A8030295A}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManagement.Application.UnitTest", "TaskManagement.Application.UnitTest\TaskManagement.Application.UnitTest.csproj", "{CBAF7C57-1904-4B93-9278-F43A5B76D637}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskManagement.Application.UnitTest", "TaskManagement.Application.UnitTest\TaskManagement.Application.UnitTest.csproj", "{CBAF7C57-1904-4B93-9278-F43A5B76D637}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskManagement.Application.IntegrationTest", "TaskManagement.Application.IntegrationTest\TaskManagement.Application.IntegrationTest.csproj", "{929F11B1-C52B-45A2-BDA2-7114AFF2CCDC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskManagement.Test.Common", "TaskManagement.Test.Common\TaskManagement.Test.Common.csproj", "{E1A17810-AABF-4B00-BA5F-74C728696CE0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManagement.IntegrationTest", "TaskManagement.IntegrationTest\TaskManagement.IntegrationTest.csproj", "{F78219CE-6EE7-4ED3-BA18-D1F0571FDB81}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,6 +48,18 @@ Global
 		{CBAF7C57-1904-4B93-9278-F43A5B76D637}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CBAF7C57-1904-4B93-9278-F43A5B76D637}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CBAF7C57-1904-4B93-9278-F43A5B76D637}.Release|Any CPU.Build.0 = Release|Any CPU
+		{929F11B1-C52B-45A2-BDA2-7114AFF2CCDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{929F11B1-C52B-45A2-BDA2-7114AFF2CCDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{929F11B1-C52B-45A2-BDA2-7114AFF2CCDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{929F11B1-C52B-45A2-BDA2-7114AFF2CCDC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1A17810-AABF-4B00-BA5F-74C728696CE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1A17810-AABF-4B00-BA5F-74C728696CE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1A17810-AABF-4B00-BA5F-74C728696CE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1A17810-AABF-4B00-BA5F-74C728696CE0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F78219CE-6EE7-4ED3-BA18-D1F0571FDB81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F78219CE-6EE7-4ED3-BA18-D1F0571FDB81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F78219CE-6EE7-4ED3-BA18-D1F0571FDB81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F78219CE-6EE7-4ED3-BA18-D1F0571FDB81}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

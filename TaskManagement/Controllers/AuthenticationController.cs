@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Text;
-using TaskManagement.Extensions;
+using TaskManagement.Application.Abstractions.Identity;
+using TaskManagement.Infrastructure.Common.Models.Identity;
 
 namespace TaskManagement.Controllers
 {
@@ -13,31 +11,25 @@ namespace TaskManagement.Controllers
     public class AuthenticationController : ControllerBase
     {
 
-        private readonly IConfiguration _configuration;
+        private readonly IIdentityService _identityService;
 
-        public AuthenticationController(IConfiguration configuration)
+        public AuthenticationController(IIdentityService identityService)
         {
-            _configuration = configuration;
+            _identityService = identityService;
         }
 
         [HttpPost]
-        public IActionResult Login(string userName)
+        [AllowAnonymous]
+        public async Task<IActionResult> Signup([FromBody] UserSignupDto signupData)
         {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.UTF8.GetBytes(_configuration.GetJwtSecretKey());
-            var tokenDescriptor = new SecurityTokenDescriptor
+            bool isSuccess = await _identityService.CreateUser(signupData);
+            if (isSuccess)
             {
-                Issuer = _configuration.GetJwtIssuer(),
-                Audience = _configuration.GetJwtAudience(),
-                Expires = DateTime.UtcNow.AddDays(7),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
-                    SecurityAlgorithms.HmacSha256Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            var tokenString = tokenHandler.WriteToken(token);
+                string tokenString = await _identityService.CreateToken();
+                return Ok(new { token = tokenString, Scheme = JwtBearerDefaults.AuthenticationScheme });
+            }
 
-
-            return Ok(new { token = tokenString, Scheme = JwtBearerDefaults.AuthenticationScheme });
+            return BadRequest();
         }
     }
 }

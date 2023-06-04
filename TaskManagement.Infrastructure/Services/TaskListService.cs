@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TaskManagement.Application.Abstractions.Tasks;
 using TaskManagement.Application.Exceptions;
+using TaskManagement.Application.Exceptions.Tasks;
 using TaskManagement.Domain.Entities;
 using TaskManagement.Domain.Enums;
 
@@ -17,29 +18,27 @@ namespace TaskManagement.Infrastructure.Services
             _taskListRepo = taskListRepository;
         }
 
-        public async ValueTask<bool> ChangeTaskList(TaskItem taskItem, ETaskState newState)
+        public async ValueTask<bool> ChangeTaskListAsync(TaskItem taskItem, ETaskState newState)
         {
             if (taskItem == null)
                 throw new TaskItemNotExistException();
 
-            if (taskItem.List == null)
-                throw new TaskListNotExistException(newState);
-
             if (newState == ETaskState.None)
                 throw new TaskInvalidDataException("Change Task List");
 
-            if (taskItem.List.State == newState)
+            if (taskItem.List?.State == newState)
             {
                 return true;
             }
 
-            TaskList taskList = await FindOrCreateTaskListByState(newState);
+            TaskList taskList = await FindOrCreateTaskListByStateAsync(newState);
             taskList.AddNewItem(taskItem);
             await _taskListRepo.UpdateAsync(taskList);
+            taskItem.SetList(taskList);
             return true;
         }
 
-        public async ValueTask<TaskList> FindOrCreateTaskListByState(ETaskState taskState)
+        public async ValueTask<TaskList> FindOrCreateTaskListByStateAsync(ETaskState taskState)
         {
             TaskList taskList = await _taskListRepo.GetTaskListByState(taskState);
             if (taskList == null)
